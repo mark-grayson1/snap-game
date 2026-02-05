@@ -6,5 +6,8 @@ public class Main {
     static void main() {
         CardGame snap = new CardGame("snap");
         snap.getDeck();
+
+        Card card = snap.dealCard();
+        snap.getDeck();
     }
 }

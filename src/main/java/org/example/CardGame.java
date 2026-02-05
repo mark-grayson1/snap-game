@@ -33,5 +33,9 @@ public class CardGame {
 
     public void getDeck() {
         deckOfCards.forEach(card -> System.out.println(card));
-        }
+    }
+
+    public Card dealCard() {
+        return deckOfCards.removeFirst();
+    }
 }
