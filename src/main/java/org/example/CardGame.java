@@ -50,4 +50,9 @@ public class CardGame {
         deckOfCards.sort(new SortCardsBySuiteAndValue());
         return deckOfCards;
     }
+
+    public ArrayList<Card> shuffleDeck() {
+        Collections.shuffle(deckOfCards);
+        return deckOfCards;
+    }
 }
