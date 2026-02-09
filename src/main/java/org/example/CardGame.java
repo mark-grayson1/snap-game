@@ -2,14 +2,11 @@ package org.example;
 
 import java.util.*;
 import java.util.ArrayList;
-import java.util.List;
-//import java.util.Collections;
 
 public class CardGame {
 
     static final byte NUMBER_OF_SUITES = 4;
     static final byte CARDS_IN_SUITE = 13;
-    static final byte CARDS_IN_PACK = 52;
 
     //define suits
     String diamond = "\u2666";
