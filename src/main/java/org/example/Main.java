@@ -4,7 +4,7 @@ package org.example;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     static void main() {
-        CardGame snap = new CardGame("snap");
+        Snap snap = new Snap("snap");
         snap.getDeck();
 
         Card card = snap.dealCard();
@@ -15,5 +15,6 @@ public class Main {
         snap.getDeck();
         snap.shuffleDeck();
         snap.getDeck();
+        snap.playGame();
     }
 }
