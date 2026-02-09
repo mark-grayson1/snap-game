@@ -1,11 +1,15 @@
 package org.example;
 
+import java.util.*;
 import java.util.ArrayList;
+import java.util.List;
+//import java.util.Collections;
 
 public class CardGame {
 
     static final byte NUMBER_OF_SUITES = 4;
     static final byte CARDS_IN_SUITE = 13;
+    static final byte CARDS_IN_PACK = 52;
 
     //define suits
     String diamond = "\u2666";
@@ -26,7 +30,7 @@ public class CardGame {
 
         for (int suite = 0; suite < NUMBER_OF_SUITES; suite++){
             for (int card = 2; card <= CARDS_IN_SUITE + 1; card++) {
-                deckOfCards.add(new Card(suiteArr[suite], symbolArr[card-2], card));
+                deckOfCards.add(new Card(card, suiteArr[suite], symbolArr[card-2]));
             }
         }
     }
@@ -35,7 +39,13 @@ public class CardGame {
         deckOfCards.forEach(card -> System.out.println(card));
     }
 
+
     public Card dealCard() {
         return deckOfCards.removeFirst();
+    }
+
+    public ArrayList<Card> sortDeckInNumberOrder() {
+        Collections.sort(deckOfCards);
+        return deckOfCards;
     }
 }
