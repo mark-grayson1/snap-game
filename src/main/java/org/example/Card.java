@@ -5,6 +5,30 @@ public class Card implements Comparable<Card>{
     String symbol = "";
     int value = 0;
 
+    public String getSuite() {
+        return suite;
+    }
+
+    public void setSuite(String suite) {
+        this.suite = suite;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
     public  Card(int value, String suite, String symbol){
         this.suite = suite;
         this.symbol = symbol;
@@ -18,7 +42,7 @@ public class Card implements Comparable<Card>{
 
     @Override
     public int compareTo(Card other) {
-        // Order by ID - Natural Ascending Order
+        // Order by value - Natural Ascending Order
         // -1 - Negative - (this) is smaller that the (other) -> (this)
         // object will be positioned before the (other) object
         // 0 - Equal -> Positions will not change
@@ -28,20 +52,4 @@ public class Card implements Comparable<Card>{
     }
 }
 
-// Java Program to Sort an ArrayList
-
-
-// Class 2: Child class
-// creates the comparator for comparing stock value
-//class CardComparator implements Comparator<Card> {
-//
-//    // Function to compare
-//    public int compare(Card c1, Card c2)
-//    {
-//        if (c1.value > c2.value)
-//            return c1.value;
-//        else
-//            return c2.value;
-//    }
-//}
 

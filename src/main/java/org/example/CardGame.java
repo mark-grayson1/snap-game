@@ -45,4 +45,9 @@ public class CardGame {
         Collections.sort(deckOfCards);
         return deckOfCards;
     }
+
+    public ArrayList<Card> sortDeckIntoSuits() {
+        deckOfCards.sort(new SortCardsBySuiteAndValue());
+        return deckOfCards;
+    }
 }
