@@ -6,7 +6,8 @@ import java.util.Scanner;
 public class Snap extends CardGame {
 
     private final Scanner scanner = new Scanner(System.in);
-    private final String[] commands = {"Press 1 to start the game", "Press 2 to quit"};
+    private final String[] commands = {"Press 1 to start single player game", "Press 2 to start 2 player game",
+            "Press 3 to quit"};
     private Card currentCard = null;
     private Card newCard = null;
     private boolean gameOver = false;
@@ -16,6 +17,7 @@ public class Snap extends CardGame {
     }
 
     public void playGame(){
+        currentCard = null;
         shuffleDeck();
         displayMenu();
     }
@@ -28,11 +30,22 @@ public class Snap extends CardGame {
             int userSelection = readIntegerInput(commands.length);
 
             // if exit ...
-            if( userSelection == 2) {
+            if( userSelection == 3) {
                 return;
             }
-            else {
-                exiting = askUserToTakeTurn();
+            else if (userSelection == 2) {
+                Player player1 = new Player();
+                player1.setPlayerNumber(1);
+
+                Player player2 = new Player();
+                player2.setPlayerNumber(2);
+                exiting = askUserToTakeTurn(player1, player2);
+                if (exiting)
+                    return;
+            } else {
+                Player player = new Player();
+                player.setPlayerNumber(0);
+                exiting = askUserToTakeTurn(player);
                 if (exiting)
                     return;
             }
@@ -65,20 +78,20 @@ public class Snap extends CardGame {
         }
     }
 
-    private boolean askUserToTakeTurn() {
+    private boolean askUserToTakeTurn(Player player) {
         boolean exiting = false;
 
         while (true) {
             System.out.println("Press enter to take your turn or 0 to exit game.");
-            String userInput = scanner.nextLine();
 
+            String userInput = scanner.nextLine();
             String userInputClean = userInput.trim().toLowerCase();
 
             if (userInputClean.equals("0")) {
                 exiting = true;
                 return exiting;
             } else if (userInputClean.equals("")) {
-                exiting = dealCardFromPack();
+                exiting = dealCardFromPack(player);
                 if (exiting)
                     return exiting;
             } else {
@@ -88,20 +101,57 @@ public class Snap extends CardGame {
         }
     }
 
-    private boolean dealCardFromPack() {
+    private boolean askUserToTakeTurn(Player player1, Player player2) {
+        boolean exiting = false;
+        boolean firstPlayer = true;
+
+        while (true) {
+            //for single player games the player number is 0
+            if (firstPlayer) {
+                System.out.println("Player " + player1.playerNumber + " - press enter to take your turn or 0 to exit game.");
+            } else {
+                System.out.println("Player " + player2.playerNumber + " - press enter to take your turn or 0 to exit game.");
+            }
+
+            String userInput = scanner.nextLine();
+            String userInputClean = userInput.trim().toLowerCase();
+
+            if (userInputClean.equals("0")) {
+                exiting = true;
+                return exiting;
+            } else if (userInputClean.equals("")) {
+                if (firstPlayer)
+                    exiting = dealCardFromPack(player1);
+                else
+                    exiting = dealCardFromPack(player2);
+                if (exiting)
+                    return exiting;
+            } else {
+                System.out.println("Unable to understand input, try again");
+                return exiting;
+            }
+            firstPlayer = !firstPlayer;
+        }
+    }
+
+    private boolean dealCardFromPack(Player player) {
         newCard = this.dealCard();
         System.out.println("Dealt the card - " + newCard.toString());
 
+        // first time round set the currentCard
         if (currentCard == null) {
             currentCard = newCard;
         } else if (newCard.value == currentCard.value) {
-            System.out.println("SNAP! Player wins, congratulations!");
+            if (player.playerNumber > 0)
+                System.out.println("SNAP! Player " + player.playerNumber + " wins, congratulations!");
+            else
+                System.out.println("SNAP! Player wins, congratulations!");
             gameOver = true;
         } else {
             currentCard = newCard;
             gameOver = deckOfCards.size() == 0;
             if (gameOver)
-                System.out.println("All the cards in pack have been dealt with no 2 cards the same value, you lose - game over!");
+                System.out.println("All the cards in pack have been dealt with no 2 cards the same value, computer wins - game over!");
         }
 
         return gameOver;
