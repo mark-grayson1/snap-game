@@ -5,14 +5,22 @@ import java.util.Scanner;
 
 public class Snap extends CardGame {
 
-    private Scanner scanner = new Scanner(System.in);
-    private String commands[] = {"Press 1 to start the game", "Press 2 to quit"};
+    private final Scanner scanner = new Scanner(System.in);
+    private final String[] commands = {"Press 1 to start the game", "Press 2 to quit"};
+    private Card currentCard = null;
+    private Card newCard = null;
+    private boolean gameOver = false;
 
     public Snap(String name) {
         super(name);
     }
 
     public void playGame(){
+        shuffleDeck();
+        displayMenu();
+    }
+
+    public void displayMenu(){
         boolean exiting = false;
 
         while (true) {
@@ -51,22 +59,6 @@ public class Snap extends CardGame {
         }
     }
 
-    protected String readStringInput(String message) {
-        System.out.println(message);
-
-        while (true) {
-            String userInput = scanner.nextLine();
-
-            String userInputClean = userInput.trim().toLowerCase();
-
-            if (!userInputClean.equals("")) {
-                return userInputClean;
-            } else {
-                System.out.println("Unable to understand input, try again");
-            }
-        }
-    }
-
     protected void printCommands(String[] commands) {
         for (int i = 0; i < commands.length; i++) {
             System.out.println((i + 1) + ": " + commands[i]);
@@ -86,10 +78,32 @@ public class Snap extends CardGame {
                 exiting = true;
                 return exiting;
             } else if (userInputClean.equals("")) {
-                System.out.println("Card dealt from the pack");
+                exiting = dealCardFromPack();
+                if (exiting)
+                    return exiting;
             } else {
                 System.out.println("Unable to understand input, try again");
+                return exiting;
             }
         }
+    }
+
+    private boolean dealCardFromPack() {
+        newCard = this.dealCard();
+        System.out.println("Dealt the card - " + newCard.toString());
+
+        if (currentCard == null) {
+            currentCard = newCard;
+        } else if (newCard.value == currentCard.value) {
+            System.out.println("SNAP! Player wins, congratulations!");
+            gameOver = true;
+        } else {
+            currentCard = newCard;
+            gameOver = deckOfCards.size() == 0;
+            if (gameOver)
+                System.out.println("All the cards in pack have been dealt with no 2 cards the same value, you lose - game over!");
+        }
+
+        return gameOver;
     }
 }

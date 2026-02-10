@@ -5,16 +5,6 @@ package org.example;
 public class Main {
     static void main() {
         Snap snap = new Snap("snap");
-        snap.getDeck();
-
-        Card card = snap.dealCard();
-        snap.getDeck();
-        snap.sortDeckInNumberOrder();
-        snap.getDeck();
-        snap.sortDeckIntoSuits();
-        snap.getDeck();
-        snap.shuffleDeck();
-        snap.getDeck();
         snap.playGame();
     }
 }

@@ -19,7 +19,7 @@ public class CardGame {
     String[] symbolArr = {"2","3","4","5","6","7","8","9","10","J","Q","K","A"};
 
 
-    ArrayList<Card> deckOfCards = new ArrayList<>(52);
+    protected ArrayList<Card> deckOfCards = new ArrayList<>(52);
     String name = "";
 
     public CardGame(String name){
