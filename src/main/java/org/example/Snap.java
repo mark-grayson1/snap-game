@@ -1,16 +1,21 @@
 package org.example;
 
-
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Snap extends CardGame {
-
     private final Scanner scanner = new Scanner(System.in);
     private final String[] commands = {"Press 1 to start single player game", "Press 2 to start 2 player game",
             "Press 3 to quit"};
     private Card currentCard = null;
     private Card newCard = null;
     private boolean gameOver = false;
+    int interval;
+    static Timer timer = null;
+    static int counter = 0;
+    static boolean timerExpired = false;
+    static boolean gameWon = false;
 
     public Snap(String name) {
         super(name);
@@ -135,6 +140,7 @@ public class Snap extends CardGame {
     }
 
     private boolean dealCardFromPack(Player player) {
+
         newCard = this.dealCard();
         System.out.println("Dealt the card - " + newCard.toString());
 
@@ -142,8 +148,63 @@ public class Snap extends CardGame {
         if (currentCard == null) {
             currentCard = newCard;
         } else if (newCard.value == currentCard.value) {
-            if (player.playerNumber > 0)
-                System.out.println("SNAP! Player " + player.playerNumber + " wins, congratulations!");
+            if (player.playerNumber > 0) {
+
+                System.out.println("SNAP! Player " + player.playerNumber + " has an opportunity to win.");
+                System.out.println("To win player " + player.playerNumber + " MUST enter snap in 2 secs otherwise you lose.");
+                System.out.println("----------------------------  QUICK - ENTER snap NOW!  ----------------------------");
+
+                //create timer task to increment counter
+                TimerTask timerTask = new TimerTask() {
+
+                    @Override
+                    public void run() {
+                    //     System.out.println("TimerTask executing counter is: " + counter);
+                        counter++;
+                    }
+                };
+
+                //create thread to print counter value
+                Thread t = new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        while (true) {
+                            try {
+                                if (counter == 2) {
+                                    if (!gameWon)
+                                        System.out.println("Too slow - count down reached 0 press 'enter' to finish");
+                                    timer.cancel();//end the timer
+                                    timerExpired = true;
+                                    break;//end this loop
+                                }
+                                Thread.sleep(1000);
+                            } catch (InterruptedException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    }
+                });
+
+                timer = new Timer("MyTimer");//create a new timer
+
+
+                timer.scheduleAtFixedRate(timerTask, 30, 1000);//start timer in 30ms to increment  counter
+                t.start();//start thread to display counter
+                String userInput = scanner.nextLine();
+
+                if (userInput != "")
+                    System.out.println("You entered - " + userInput);
+
+                if (!timerExpired && userInput.equalsIgnoreCase("snap")) {
+                    gameWon = true;
+                    System.out.println("CONGRATULATIONS! You won the game by snapping faster than a crocodile!!!");
+                }
+                else {
+                    int winningPlayer = (player.playerNumber == 1) ? 2 : 1;
+                    System.out.println("You were too slow or had a typo! Player " + winningPlayer + " wins!");
+                }
+            }
             else
                 System.out.println("SNAP! Player wins, congratulations!");
             gameOver = true;
@@ -151,7 +212,7 @@ public class Snap extends CardGame {
             currentCard = newCard;
             gameOver = deckOfCards.size() == 0;
             if (gameOver)
-                System.out.println("All the cards in pack have been dealt with no 2 cards the same value, computer wins - game over!");
+                System.out.println("All the cards in pack have been dealt with no consecutive 2 cards the same value, computer wins - game over!");
         }
 
         return gameOver;
