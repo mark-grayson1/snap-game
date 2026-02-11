@@ -14,6 +14,14 @@ A card game based on the classic card game - snap. Using Java, OOP and a text ba
 
 - Java
 
+### Installation
+1. Create a folder on your computer for the repository.
+2. From the command prompt change directories to the directory created in step 1. 
+3. Clone the GitHub repository - https://github.com/mark-grayson1/snap-game
+4. Using IntelliJ IDEA Open the snap-game folder which will be inside the folder created in step 1.
+5. In IntelliJ IDEA right-click on "snap-game" folder in Project view and mark directory as sources route.
+6. Open the Main file in the java folder and on the toolbar press the green Run button.
+
 
 ### Design - basic game logic
 
