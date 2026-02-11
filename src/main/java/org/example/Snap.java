@@ -6,87 +6,107 @@ import java.util.TimerTask;
 
 public class Snap extends CardGame {
     private final Scanner scanner = new Scanner(System.in);
-    private final String[] commands = {"Press 1 to start single player game", "Press 2 to start 2 player game",
-            "Press 3 to quit"};
-    private Card currentCard = null;
-    private Card newCard = null;
     private boolean gameOver = false;
     int interval;
     static Timer timer = null;
     static int counter = 0;
     static boolean timerExpired = false;
     static boolean gameWon = false;
+    private Card currentCard = null;
+    private Card newCard = null;
+    private int userSelection = 0;
 
     public Snap(String name) {
         super(name);
     }
 
-    public void playGame(){
-        currentCard = null;
-        shuffleDeck();
-        displayMenu();
-    }
-
-    public void displayMenu(){
+    public void playGame() {
+        TextMenu menu = new TextMenu();
         boolean exiting = false;
 
-        while (true) {
-            System.out.println(""); // blank line to serparate menu display
-            System.out.println("=======================================");
-            System.out.println("            Main Menu");
-            System.out.println("=======================================");
-            printCommands(commands);
-            int userSelection = readIntegerInput(commands.length);
+        shuffleDeck();
+        userSelection = menu.GetUserSelection();
 
-            // if exit ...
-            if( userSelection == 3) {
+        if (userSelection == 3) {           // exit
+            return;
+        } else if (userSelection == 2) {    // 2 player game
+            Player player1 = new Player();
+            player1.setPlayerNumber(1);
+
+            Player player2 = new Player();
+            player2.setPlayerNumber(2);
+            exiting = askUserToTakeTurn(player1, player2);
+            if (exiting)
                 return;
-            }
-            else if (userSelection == 2) {
-                Player player1 = new Player();
-                player1.setPlayerNumber(1);
-
-                Player player2 = new Player();
-                player2.setPlayerNumber(2);
-                exiting = askUserToTakeTurn(player1, player2);
-                if (exiting)
-                    return;
-            } else {
-                Player player = new Player();
-                player.setPlayerNumber(0);
-                exiting = askUserToTakeTurn(player);
-                if (exiting)
-                    return;
-            }
+        } else {                            // single player game
+            Player player = new Player();
+            player.setPlayerNumber(0);
+            exiting = askUserToTakeTurn(player);
+            if (exiting)
+                return;
         }
     }
-
-    protected int readIntegerInput(int limit) {
-        System.out.println(String.format("Enter a number between 1 and %d:", limit));
-        while( true ) {
-            String line = scanner.nextLine();
-
-            try {
-                int userSelection = Integer.valueOf(line.trim());
-
-                if( userSelection < 1 || userSelection > limit ) {
-                    System.out.println("Please enter a number between 1 and " + limit);
-                } else {
-                    return userSelection;
-                }
-            } catch (Exception e) {
-                System.out.println("Please enter a number between 1 and " + limit);
-
-            }
-        }
-    }
-
-    protected void printCommands(String[] commands) {
-        for (int i = 0; i < commands.length; i++) {
-            System.out.println((i + 1) + ": " + commands[i]);
-        }
-    }
-
+//
+//    public void displayMenu(){
+//        boolean exiting = false;
+//
+//        while (true) {
+//            System.out.println(""); // blank line to serparate menu display
+//            System.out.println("=======================================");
+//            System.out.println("            Main Menu");
+//            System.out.println("=======================================");
+//            printCommands(commands);
+//            int userSelection = readIntegerInput(commands.length);
+//
+//            // if exit ...
+//            if( userSelection == 3) {
+//                return;
+//            }
+//            else if (userSelection == 2) {
+//                Player player1 = new Player();
+//                player1.setPlayerNumber(1);
+//
+//                Player player2 = new Player();
+//                player2.setPlayerNumber(2);
+//                exiting = askUserToTakeTurn(player1, player2);
+//                if (exiting)
+//                    return;
+//            } else {
+//                Player player = new Player();
+//                player.setPlayerNumber(0);
+//                exiting = askUserToTakeTurn(player);
+//                if (exiting)
+//                    return;
+//            }
+//        }
+//    }
+//
+//    protected int readIntegerInput(int limit) {
+//        System.out.println(String.format("Enter a number between 1 and %d:", limit));
+//        while( true ) {
+//            String line = scanner.nextLine();
+//
+//            try {
+//                int userSelection = Integer.valueOf(line.trim());
+//
+//                if( userSelection < 1 || userSelection > limit ) {
+//                    System.out.println("Please enter a number between 1 and " + limit);
+//                } else {
+//                    return userSelection;
+//                }
+//            } catch (Exception e) {
+//                System.out.println("Please enter a number between 1 and " + limit);
+//
+//            }
+//        }
+//    }
+//
+//    protected void printCommands(String[] commands) {
+//        for (int i = 0; i < commands.length; i++) {
+//            System.out.println((i + 1) + ": " + commands[i]);
+//        }
+//    }
+//
     private boolean askUserToTakeTurn(Player player) {
         boolean exiting = false;
 
@@ -178,7 +198,7 @@ public class Snap extends CardGame {
                             try {
                                 if (counter == 2) {
                                     if (!gameWon)
-                                        System.out.println("Too slow - count down reached 0 press 'enter' to finish");
+                                        System.out.println("Too slow or had typo - count down reached 0 press 'enter' to finish");
                                     timer.cancel();//end the timer
                                     timerExpired = true;
                                     break;//end this loop
@@ -200,6 +220,8 @@ public class Snap extends CardGame {
 
                 if (userInput != "")
                     System.out.println("You entered - " + userInput);
+                else
+                    System.out.println("You entered - 'enter' only! You need the word snap");
 
                 if (!timerExpired && userInput.equalsIgnoreCase("snap")) {
                     gameWon = true;
