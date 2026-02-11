@@ -91,7 +91,7 @@ public class Snap extends CardGame {
         boolean exiting = false;
 
         while (true) {
-            System.out.println("Press enter to take your turn or 0 to exit game.");
+            System.out.printf("Press 'enter' to take your turn or 0 to exit game.");
 
             String userInput = scanner.nextLine();
             String userInputClean = userInput.trim().toLowerCase();
@@ -147,6 +147,7 @@ public class Snap extends CardGame {
 
         newCard = this.dealCard();
         System.out.println("Dealt the card - " + newCard.toString());
+        System.out.println(""); // format with blank line
 
         // first time round set the currentCard
         if (currentCard == null) {
