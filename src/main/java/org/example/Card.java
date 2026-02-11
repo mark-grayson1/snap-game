@@ -9,24 +9,8 @@ public class Card implements Comparable<Card>{
         return suite;
     }
 
-    public void setSuite(String suite) {
-        this.suite = suite;
-    }
-
-    public String getSymbol() {
-        return symbol;
-    }
-
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
-    }
-
     public int getValue() {
         return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
     }
 
     public  Card(int value, String suite, String symbol){
