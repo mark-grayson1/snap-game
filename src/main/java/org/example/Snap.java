@@ -137,7 +137,7 @@ public class Snap extends CardGame {
                             try {
                                 if (counter == 2) {
                                     if (!gameWon)
-                                        System.out.println("Too slow or had typo - count down reached 0 press 'enter' to finish");
+                                        System.out.println("Too slow or had typo - count down reached 0 press 'enter' to finish if required.");
                                     timer.cancel();//end the timer
                                     timerExpired = true;
                                     break;//end this loop
