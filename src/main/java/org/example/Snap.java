@@ -31,6 +31,10 @@ public class Snap extends CardGame {
         boolean exiting = false;
 
         while (true) {
+            System.out.println(""); // blank line to serparate menu display
+            System.out.println("=======================================");
+            System.out.println("            Main Menu");
+            System.out.println("=======================================");
             printCommands(commands);
             int userSelection = readIntegerInput(commands.length);
 
